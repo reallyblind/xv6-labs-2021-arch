@@ -141,6 +141,8 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  p->trace_mask = 0;
+
   return p;
 }
 
@@ -314,6 +316,8 @@ fork(void)
   acquire(&np->lock);
   np->state = RUNNABLE;
   release(&np->lock);
+
+  np->trace_mask = p->trace_mask;
 
   return pid;
 }
@@ -653,4 +657,16 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+// kernel/proc.c
+// 统计处于活动状态的进程
+void
+kama_procnum(uint64* dst) {
+    *dst = 0;
+    struct proc* p;
+    for (p = proc;p < &proc[NPROC];p++) {
+        if (p->state != UNUSED)
+            (*dst)++;
+    }
 }
