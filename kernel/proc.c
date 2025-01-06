@@ -658,3 +658,15 @@ procdump(void)
     printf("\n");
   }
 }
+
+// kernel/proc.c
+// 统计处于活动状态的进程
+void
+kama_procnum(uint64* dst) {
+    *dst = 0;
+    struct proc* p;
+    for (p = proc;p < &proc[NPROC];p++) {
+        if (p->state != UNUSED)
+            (*dst)++;
+    }
+}

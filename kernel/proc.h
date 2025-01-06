@@ -1,4 +1,4 @@
-// Saved registers for kernel context switches.
+// Saved registers for kernel context switches.proc
 struct context {
   uint64 ra;
   uint64 sp;
